@@ -17,7 +17,9 @@ def delete_by_name(name):
 
 def number_of_emps():
     search_by_name("")
-    number_of_emps = driver.find_element_by_xpath("//tbody[count(./tr)])")
+    #number_of_emps = driver.find_element_by_xpath("count(//tbody/tr)")
+    number_of_emps = len(driver.find_elements_by_xpath("//tbody/tr"))
+    return  number_of_emps
     # print(number_of_emps.size)
 
 
@@ -53,14 +55,14 @@ driver.get("http://www.learnwebservices.com/empapp/employees.xhtml")
 # search_by_name('John Doe')
 # delete_by_azonosito('93f8323b-c607-4a25-b263-4a4c90ae554a')
 # delete_by_name('torlendo alk')
-
+print(number_of_emps())
 #change_to_hun()
 #change_to_eng()
 #create_employee("Kovács Géza")
 #driver.implicitly_wait(20)
 #print("monogram" + read_monogram())
-create_employee("")
-print(read_error_message())
+#create_employee("")
+#print(read_error_message())
 
 
 

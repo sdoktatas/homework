@@ -65,12 +65,24 @@ def full_create(name, card_number):
     driver.implicitly_wait(5)
     fill_card_number(card_number)
 
+def update_employee(oldname,newname):
+    update = driver.find_element_by_xpath("//tr[td[contains(., 'name')]]/td[1]/a".replace("name", oldname))
+    update.click()
+    updateField = driver.find_element_by_xpath("//input[@type = 'text']")
+    updateField.clear()
+    updateField.send_keys(newname)
+    updateButton = updateField = driver.find_element_by_xpath("//input[@type = 'submit']")
+    updateButton.click()
+
+chrome_options = webdriver.ChromeOptions();
+chrome_options.add_experimental_option("excludeSwitches", ['enable-automation']);
 driver = webdriver.Chrome()
 driver.get("http://www.learnwebservices.com/empapp/employees.xhtml")
 
-create_employee("Teszt Elő")
-fill_card_number("22")
+# create_employee("Teszt Elő")
+# fill_card_number("22")
 
-full_create('Jim Doe', '52')
+# full_create('Jim Doe', '52')
+update_employee('toUpdate','afterUpdate')
 
 

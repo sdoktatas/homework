@@ -9,12 +9,13 @@ def search_by_name(name):
 
 
 def delete_by_azonosito(azonosito):
-    to_delete = driver.find_element_by_xpath("//tr[td[a[text() = 'azonosito']]]/td[8]/form/input[@value='Delete']".replace("azonosito", azonosito))
+    to_delete = driver.find_element_by_xpath("//tr[td[a[text() = 'azonosito']]]/td[7]/form/input[@value='Delete']".replace("azonosito", azonosito))
     to_delete.click()
 
 
 def delete_by_name(name):
-    to_delete = driver.find_element_by_xpath("//tr[td[contains(., 'name')]]/td[8]/form/input[@value='Delete']".replace("name", name))
+    to_delete = driver.find_element_by_xpath("//tr[td[contains(., 'name')]]/td[7]/form/input[@value='Delete']".replace("name", name))
+    #igy lehet containst hasznalni - td[contains(text(), 'valaki']
     to_delete.click()
 
 
@@ -82,7 +83,8 @@ driver.get("http://www.learnwebservices.com/empapp/employees.xhtml")
 # create_employee("Teszt Elő")
 # fill_card_number("22")
 
-# full_create('Jim Doe', '52')
-update_employee('toUpdate','afterUpdate')
+#full_create('Jim Doe', '52')
+#update_employee('toUpdate','afterUpdate')
+
 
 

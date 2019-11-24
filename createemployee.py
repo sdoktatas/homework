@@ -1,3 +1,5 @@
+import time
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions
@@ -40,7 +42,20 @@ def wait_for_monogram(expected_monogram):
      return driver.find_element_by_id("create-form:monogram-text").text
 
 
-driver = webdriver.Chrome()
+def click_to_create_employee_button():
+    driver.find_element_by_id("create-form:save-button").click()
+
+
+def type_to_card_input_with_random_number(card_number):
+    card_number_input = driver.find_element_by_id("create-form:card-number-input")
+    card_number_input.send_keys(card_number + str(time.time()))
+    #button = driver.find_element_by_id("create-form:save-button")
+    #button.click()
+
+
+chrome_options = webdriver.ChromeOptions();
+chrome_options.add_experimental_option("excludeSwitches", ['enable-automation']);
+driver = webdriver.Chrome(options=chrome_options)
 driver.get("http://www.learnwebservices.com/empapp/create-employee.xhtml")
 
 
@@ -50,14 +65,18 @@ driver.get("http://www.learnwebservices.com/empapp/create-employee.xhtml")
 
 
 
-print_welcome()
+#print_welcome()
 click_to_name_input()
 
 #click_to_header()
 #wait_for_error_message("Az alkalmazott nevét meg kell adni!")
 
-type_name_input("Jim Doe")
-print(wait_for_monogram("JD"))
+type_name_input("Uj Alkamazott X")
+wait_for_monogram("UAX")
+click_to_create_employee_button()
+type_to_card_input_with_random_number("28645654")
+click_to_create_employee_button()
+
 
 #várakoztatás
 #WebDriverWait(driver,10).until(

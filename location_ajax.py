@@ -47,11 +47,34 @@ def create_location_test(name, coords):
     find_created_location_with_wait(name_ts)
 
 
-def modify_by_name(oldname, newname):
+def modify_by_name(oldname, name):
+    newname = name + str(time.time())
+    WebDriverWait(driver, 10).until(
+        expected_conditions.presence_of_element_located((By.XPATH, "//tr[1]/td[1]"))
+    )
     xpath = "//tr[td[text()='name']]/td[last()]/button[text()='Edit']".replace("name", oldname)
-    print(xpath)
     edit_button = driver.find_element_by_xpath(xpath)
-    # edit_button.click()
+    edit_button.click()
+    WebDriverWait(driver, 10).until(
+        expected_conditions.visibility_of_element_located((By.ID, "update-location-name"))
+    )
+    new_name_inmput_field = driver.find_element_by_id("update-location-name")
+    new_name_inmput_field.clear()
+    new_name_inmput_field.send_keys(newname)
+    update_button = driver.find_element(By.XPATH, "//input[@type = 'submit' and @value = 'Update location']")
+    update_button.click()
+
+
+def wait_for_location_modificationn():
+    WebDriverWait(driver, 10).until(
+        expected_conditions.text_to_be_present_in_element((By.ID, "message-div"), "Location has modified")
+    )
+
+
+def wait_for_message_display(message):
+    WebDriverWait(driver, 10).until(
+        expected_conditions.text_to_be_present_in_element((By.ID, "message-div"), message)
+    )
 
 
 chrome_options = webdriver.ChromeOptions();
@@ -65,6 +88,6 @@ driver.get(" http://www.learnwebservices.com/locations/?size=100")
 # find_created_location_with_wait('vadiuj')
 # create_location_test("a3", "47.4979,19.0402")
 
-modify_by_name("Almafalva", "Uj")
+modify_by_name("a2", "a2_m")
 
 

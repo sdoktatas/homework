@@ -47,15 +47,19 @@ def create_location_test(name, coords):
     find_created_location_with_wait(name_ts)
 
 
+def modify_by_name(oldname, newname):
+    xpath = "//tr[td[text()='name']]/td[last()]/button[text()='Edit']".replace("name", oldname)
+    print(xpath)
+    edit_button = driver.find_element_by_xpath(xpath)
+    # edit_button.click()
+
+
 chrome_options = webdriver.ChromeOptions();
 chrome_options.add_experimental_option("excludeSwitches", ['enable-automation']);
 driver = webdriver.Chrome(options=chrome_options)
 driver.get("http://www.learnwebservices.com/locations/")
 
-# create_location("vadiuj", "47.4979,19.0402")
-# wait_for_location_creation()
-# find_created_location_with_wait('vadiuj')
-create_location_test("a3", "47.4979,19.0402")
 
+modify_by_name("a2", "a2UJ")
 
 

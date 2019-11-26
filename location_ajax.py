@@ -107,6 +107,12 @@ def delete_by_id(id):
     driver.switch_to_alert().accept()
 
 
+def wait_for_delete(id):
+    xpath = "//tr[td[contains(text(),'id')]]".replace("id", str(id))
+    WebDriverWait(driver, 10).until_not(
+        expected_conditions.presence_of_element_located((By.XPATH, xpath))
+    )
+
 chrome_options = webdriver.ChromeOptions();
 chrome_options.add_experimental_option("excludeSwitches", ['enable-automation']);
 driver = webdriver.Chrome(options=chrome_options)
@@ -122,4 +128,5 @@ driver.get(" http://www.learnwebservices.com/locations/?size=100")
 # test_modification("b24", "2,2", "b24M")
 
 # test_alert_message()
-delete_by_id(11555)
+delete_by_id('11699')
+wait_for_delete('11699')

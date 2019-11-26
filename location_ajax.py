@@ -11,6 +11,9 @@ def click_cim():
 
 
 def create_location(name, coords):
+    WebDriverWait(driver, 10).until(
+        expected_conditions.presence_of_element_located((By.XPATH, "//tr[1]/td[1]"))
+    )
     first_create_buton = driver.find_element_by_id("create-location-link")
     first_create_buton.click()
     WebDriverWait(driver, 7).until(
@@ -30,21 +33,12 @@ def wait_for_location_creation():
     )
 
 
-def find_created_location_with_wait(name):
-    driver.refresh()
+def find_location_with_wait(name):
+    # driver.refresh()
     element_xpath = "//tr[td[contains(text(), 'name')]]".replace('name', name)
     WebDriverWait(driver, 10).until(
         expected_conditions.presence_of_element_located((By.XPATH, element_xpath))
     )
-    #print(element_xpath)
-
-
-def create_location_test(name, coords):
-    name_ts = name + str(time.time())
-    #print(name)
-    create_location(name_ts, coords)
-    #wait_for_location_creation()
-    find_created_location_with_wait(name_ts)
 
 
 def modify_by_name(oldname, name):
@@ -63,9 +57,10 @@ def modify_by_name(oldname, name):
     new_name_inmput_field.send_keys(newname)
     update_button = driver.find_element(By.XPATH, "//input[@type = 'submit' and @value = 'Update location']")
     update_button.click()
+    return newname
 
 
-def wait_for_location_modificationn():
+def wait_for_location_modification():
     WebDriverWait(driver, 10).until(
         expected_conditions.text_to_be_present_in_element((By.ID, "message-div"), "Location has modified")
     )
@@ -77,17 +72,54 @@ def wait_for_message_display(message):
     )
 
 
+def create_location_test(name, coords):
+    name_ts = name + str(time.time())
+    #print(name)
+    create_location(name_ts, coords)
+    #wait_for_location_creation()
+    find_location_with_wait(name_ts)
+
+
+def test_modification(original_name, coords, changed_name):
+    create_location(original_name, coords)
+
+    find_location_with_wait(original_name)
+    new_name = modify_by_name(original_name, changed_name)
+
+    wait_for_location_modification()
+
+    find_location_with_wait(new_name)
+
+
+def test_alert_message():
+    create_location("", "1,1")
+    WebDriverWait(driver, 10).until(
+        expected_conditions.text_to_be_present_in_element((By.ID, "message-div"), "must not be blank;")
+    )
+
+def delete_by_id(id):
+    WebDriverWait(driver, 10).until(
+        expected_conditions.presence_of_element_located((By.XPATH, "//tr[1]/td[1]"))
+    )
+    xpath = "//tr[td[text()='id']]/td[last()]/button[text()='Delete']".replace("id", str(id))
+    delete_button = driver.find_element_by_xpath(xpath)
+    delete_button.click()
+    driver.switch_to_alert().accept()
+
+
 chrome_options = webdriver.ChromeOptions();
 chrome_options.add_experimental_option("excludeSwitches", ['enable-automation']);
 driver = webdriver.Chrome(options=chrome_options)
 driver.get(" http://www.learnwebservices.com/locations/?size=100")
 
 
-# create_location("vadiuj", "47.4979,19.0402")
+# create_location("b35", "47.4979,19.0402")
 # wait_for_location_creation()
-# find_created_location_with_wait('vadiuj')
+# find_location_with_wait('b35')
 # create_location_test("a3", "47.4979,19.0402")
 
-modify_by_name("a2", "a2_m")
+# modify_by_name("a2", "a2_m")
+# test_modification("b24", "2,2", "b24M")
 
-
+# test_alert_message()
+delete_by_id(11555)
